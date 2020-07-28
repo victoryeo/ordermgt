@@ -17,17 +17,28 @@ if (config.env === 'development') {
 
 let amqp_url = 'amqp://mivclhnw:vES-jPTDO-7qAaAY8fgzKRvMBeCAjbVY@rhino.rmq.cloudamqp.com/mivclhnw'
 let queue = 'hello';
+let amqpConn = null;
+let amqpChan = null;
+
+function closeOnErr(err) {
+  if (!err) 
+	return false;
+  console.error("[AMQP] error", err);
+  amqpConn.close();
+  return true;
+}
 
 function processMsg(msg) {
   console.log(" [x] Received %s", msg.content.toString());
   try {
       //random payment result
       let result = Math.random() * (10 - 1) + 1
-      if (result > 5 && result <= 10)
+      console.log(result)
       // send status to order
-        channel.sendToQueue(queue, "confirmed");
+      if (result > 5 && result <= 10)
+        amqpChan.sendToQueue(queue, new Buffer("confirmed"));
       else    
-        channel.sendToQueue(queue, "declined");
+        amqpChan.sendToQueue(queue, new Buffer("declined"));
   } catch (e) {
       closeOnErr(e);
   }
@@ -48,12 +59,13 @@ amqp.connect(amqp_url+ "?heartbeat=60", function(err, connection) {
         });
 
         console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
-
+	amqpConn = connection;
+	amqpChan = channel;
         channel.consume(queue, 
            processMsg,
            {
             noAck: true
-        });
+           });
       });
     }
 });

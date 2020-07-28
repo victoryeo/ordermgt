@@ -1,2 +1,2 @@
-This project is a restaurant web page.
+This is a restaurant food ordering web app.
 

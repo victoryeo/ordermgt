@@ -21,7 +21,7 @@ let amqpConn = null;
 let amqpChan = null;
 
 function closeOnErr(err) {
-  if (!err) 
+  if (!err)
 	return false;
   console.error("[AMQP] error", err);
   amqpConn.close();
@@ -37,7 +37,7 @@ function processMsg(msg) {
       // send status to order
       if (result > 5 && result <= 10)
         amqpChan.sendToQueue(queue, new Buffer("confirmed"));
-      else    
+      else
         amqpChan.sendToQueue(queue, new Buffer("declined"));
   } catch (e) {
       closeOnErr(e);
@@ -48,7 +48,7 @@ amqp.connect(amqp_url+ "?heartbeat=60", function(err, connection) {
     if (err) {
         console.error("[AMQP]", err.message);
     }
-    if ( typeof connection !== 'undefined' && connection ) {    
+    if ( typeof connection !== 'undefined' && connection ) {
       connection.createChannel(function(error1, channel) {
         if (error1) {
             throw error1;
@@ -59,13 +59,14 @@ amqp.connect(amqp_url+ "?heartbeat=60", function(err, connection) {
         });
 
         console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
-	amqpConn = connection;
-	amqpChan = channel;
-        channel.consume(queue, 
+        amqpConn = connection;
+        amqpChan = channel;
+        channel.consume(queue,
            processMsg,
            {
             noAck: true
-           });
+           }
+        );
       });
     }
 });

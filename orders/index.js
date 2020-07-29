@@ -70,20 +70,22 @@ function processMsg(msg) {
 }
 
 function publisher(arg) {
-  amqpConn.createChannel(function(error1, channel) {
-    if (error1) {
-        throw error1;
-    }
+  if (amqpConn != null) {
+    amqpConn.createChannel(function(error1, channel) {
+      if (error1) {
+          throw error1;
+      }
 
-    let msg = arg.name;
+      let msg = arg.name;
 
-    channel.assertQueue(queue, {
-        durable: false
-    });
-    channel.sendToQueue(queue, Buffer.from(msg));
+      channel.assertQueue(queue, {
+          durable: false
+      });
+      channel.sendToQueue(queue, Buffer.from(msg));
 
-    console.log(" [x] Sent %s", msg);
-  })
+      console.log(" [x] Sent %s", msg);
+    })
+  }
 }
 
 function consumer(connection) {
@@ -104,6 +106,24 @@ function consumer(connection) {
       //connection.close();
     })
 }
+
+app.get('/api/orderstatus/:name', (req, res) => {
+  console.log(req.params.name)
+  mongoose.findOne({"name": req.params.name},
+    (err, data) => {
+    if (err) {
+      console.log('find error1')
+      res.status(401)
+      res.json({"result":"not success"})
+    }
+    else {
+      console.log('find success')
+      console.log(data)
+      res.status(200)
+      res.json({"result": data.state})
+    }
+  })
+})
 
 app.post('/api/order', (req, res) => {
   console.log(req.body)

@@ -6,7 +6,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import PopUpPrice from './PopupPrice';
+import PopUpFood from './PopupFood';
 
 const styles = theme => ({
   root: {
@@ -139,7 +139,7 @@ function EatList(props) {
         ))}
       </GridList>
     </div>
-    <PopUpPrice show={show} price={price} name={itemName} toggle={handleClose}/>
+    <PopUpFood show={show} price={price} name={itemName} toggle={handleClose}/>
     </>
   );
 }

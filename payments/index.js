@@ -16,7 +16,7 @@ if (config.env === 'development') {
 }
 
 let amqp_url = 'amqp://mivclhnw:vES-jPTDO-7qAaAY8fgzKRvMBeCAjbVY@rhino.rmq.cloudamqp.com/mivclhnw'
-let queue = 'hello';
+let queue = 'sendToPayment';
 let amqpConn = null;
 let amqpChan = null;
 

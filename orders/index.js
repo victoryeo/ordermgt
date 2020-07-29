@@ -90,22 +90,24 @@ function sendQ(arg) {
 }
 
 app.post('/api/order', (req, res) => {
-  console.log(req.body);
+  console.log(req.body)
   if (isEmptyObject(req.body)) {
     res.status(400);
-    res.send('bad request');
+    res.send('bad request')
   }
   if (req.body) {
     let order = req.body
     let data0 = new mongoose({ name: order.name, amount: order.amount, state: 'Created'})
+    console.log(data0)      
     // save to db
     data0.save((err) => {
       if (err) {
-        console.log('mongo save error1');
-        res.status(400)
+        console.log('mongo save error1')
+        res.status(401)
         res.json({"result":"not success"})
       }
       else {
+        console.log('mongo save success')      
         res.status(200)
         res.json({"result":"created"})
         //res.send({"result":"success"})

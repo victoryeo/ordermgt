@@ -5,6 +5,11 @@ const mongoUri = config.mongo.host
 console.log(mongoUri)
 mongoose.connect(mongoUri, { keepAlive: 10, useNewUrlParser: true })
 
+//To handle the deprecation warning, set useFindAndModify to false
+//DeprecationWarning: Mongoose: `findOneAndUpdate()` and `findOneAndDelete()`
+//without the `useFindAndModify` option set to false are deprecated.
+mongoose.set('useFindAndModify', false);
+
 let db = mongoose.connection
 db.on('error', () => {
   console.log(`unable to connect to database: ${mongoUri}`)

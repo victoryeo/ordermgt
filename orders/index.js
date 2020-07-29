@@ -26,6 +26,23 @@ function isEmptyObject(obj) {
 let amqp_url = 'amqp://mivclhnw:vES-jPTDO-7qAaAY8fgzKRvMBeCAjbVY@rhino.rmq.cloudamqp.com/mivclhnw'
 let queue = 'hello';
 
+function processMsg(msg) {
+  let result = msg.content.toString()
+  console.log(" [x] Received %s", result);
+  //update status
+  if (result == "declined")
+      status = "cancelled"
+  else
+      status = "confirmed"
+  mongoose.findOneAndUpdate({"name": order.name}, {$set:{"status": status}}, {},
+    (err, data) => {
+      if (err)
+        console.log('find error1')
+      else
+        console.log(data)
+    })
+}
+
 function sendQ(arg) {
   amqp.connect(amqp_url, function(err, connection) {
     let hoChannel;
@@ -39,7 +56,7 @@ function sendQ(arg) {
         }
 
         let msg = arg.name;
-	hoChannel = channel
+        hoChannel = channel
 
         channel.assertQueue(queue, {
             durable: false
@@ -48,39 +65,25 @@ function sendQ(arg) {
 
         console.log(" [x] Sent %s", msg);
 
-        channel.consume(queue, function(msg) {
-        let result = msg.content.toString()
-        console.log(" [x] Received %s", result);
-        //update status
-        if (result == "declined")
-            status = "cancelled"
-        else
-            status = "confirmed"
-        mongoose.findOneAndUpdate({"name": order.name}, {$set:{"status": status}}, {},
-         (err, data) => {
-          if (err)
-            console.log('find error1')
-          else
-            console.log(data)
-        })
-
-      }, {
-        noAck: true
+        channel.consume(queue,
+          processMsg,
+          {
+            noAck: true
+          }
+        );
     });
 
-    });
-          
     setTimeout(function() {
         // if confirmed, auto set status to delivered
         if (status == "confirmed") {
-          mongoose.findOneAndUpdate({"name": order.name}, {$set:{"status": status}}, {}, 
+          mongoose.findOneAndUpdate({"name": order.name}, {$set:{"status": "delivered"}}, {},
            (err, data) => {
             if (err)
               console.log('find error1')
             else
               console.log(data)
           })
-        }        
+        }
         connection.close();
     }, 1000);
   });
@@ -99,14 +102,14 @@ app.post('/api/order', (req, res) => {
     data0.save((err) => {
       if (err) {
         console.log('mongo save error1');
-	res.status(400)
-	res.json({"result":"not success"})
+        res.status(400)
+        res.json({"result":"not success"})
       }
       else {
-	res.status(200)
-	res.json({"result":"created"})
-	//res.send({"result":"success"})
-        //send to payment app
+        res.status(200)
+        res.json({"result":"created"})
+        //res.send({"result":"success"})
+        //send order to payment app
         sendQ(order)
       }
     })

@@ -14,6 +14,16 @@ const PopUpFood = (props)=> {
     props.toggle({order});
   }
 
+  function handleCheck() {
+    console.log("handleCheck")
+    fetch(`http://localhost:4044/api/orderstatus/${props.name}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        setOrder(data['result'])
+      })
+  }
+
   function handleOrder() {
     console.log("handleOrder")
     let opts = {
@@ -54,6 +64,8 @@ const PopUpFood = (props)=> {
         <Modal.Footer>
           <Button variant="primary" size="sm"  onClick={handleOrder}>
               Order</Button>
+          <Button variant="primary" size="sm"  onClick={handleCheck}>
+              Check</Button>
           <Button variant="secondary" size="sm"  onClick={handleClose}>
                 Close</Button>
         </Modal.Footer>

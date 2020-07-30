@@ -14,7 +14,7 @@ import ModalFooter from "react-bootstrap/ModalFooter";
 import ModalTitle from "react-bootstrap/ModalTitle";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
-import PopUpFood from './PopupFood';
+import PopUpFood from './PopUpFood';
 
 const styles = theme => ({
   root: {
@@ -77,7 +77,7 @@ function DrinkList(props) {
     <div className={classes.root}>
       <GridList cellHeight={160} className={classes.gridList} cols={3}>
       <GridListTile key="Subheader" cols={3} style={{ height: 'auto' }}>
-        <ListSubheader component="div">July</ListSubheader>
+        <ListSubheader component="div">This month</ListSubheader>
       </GridListTile>
         {tileData.map(tile => (
           <GridListTile key={tile.img} cols={tile.cols || 1}>

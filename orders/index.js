@@ -66,7 +66,7 @@ function processMsg(msg) {
             console.log(data)
         })
       }
-    }, 1000);
+    }, 10000);
 }
 
 function publisher(arg) {
@@ -125,6 +125,31 @@ app.get('/api/orderstatus/:name', (req, res) => {
   })
 })
 
+app.post('/api/ordercancel', (req, res) => {
+  console.log(req.body)
+  if (isEmptyObject(req.body)) {
+    res.status(400);
+    res.send('bad request')
+  }
+  if (req.body) {
+    order = req.body
+    mongoose.findOneAndUpdate({"name": order.name}, {"state": "cancelled"}, {new: true},
+      (err, data) => {
+        if (err) {
+          console.log('cancel error1')
+          res.status(401)
+          res.json({"result":"not success"})
+        }
+        else {
+          console.log('cancel success')
+          console.log(data)
+          res.status(200)
+          res.json({"result": data.state})
+        }
+      })
+  }
+})
+
 app.post('/api/order', (req, res) => {
   console.log(req.body)
   if (isEmptyObject(req.body)) {
@@ -133,7 +158,7 @@ app.post('/api/order', (req, res) => {
   }
   if (req.body) {
     order = req.body
-    let data0 = new mongoose({ name: order.name, amount: order.amount, state: 'Created'})
+    let data0 = new mongoose({ name: order.name, amount: order.amount, state: 'created'})
     console.log(data0)
     // save to db
     data0.save((err) => {

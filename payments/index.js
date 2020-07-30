@@ -31,6 +31,9 @@ function closeOnErr(err) {
 function processMsg(msg) {
   console.log(" [x] Received %s", msg.content.toString());
   try {
+      if (msg.content.toString() == 'closed')
+        return
+        
       //random payment result
       let result = Math.random() * (10 - 1) + 1
       console.log(result)

@@ -6,7 +6,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import PopUpFood from './PopupFood';
+import PopUpFood from './PopUpFood';
 
 const styles = theme => ({
   root: {
@@ -58,21 +58,6 @@ const tileData = [
     title: "Vegetables",
     author: "jill111",
     cols: 2
-  },
-  {
-    img: "https://material-ui.com/static/images/grid-list/plant.jpg",
-    title: "Water plant",
-    author: "BkrmadtyaKarki",
-  },
-  {
-    img: "https://material-ui.com/static/images/grid-list/mushroom.jpg",
-    title: "Mushrooms",
-    author: "PublicDomainPictures"
-  },
-  {
-    img: "https://material-ui.com/static/images/grid-list/olive.jpg",
-    title: "Olive oil",
-    author: "congerdesign"
   },
 ];
 

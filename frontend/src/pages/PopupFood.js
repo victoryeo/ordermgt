@@ -16,12 +16,46 @@ const PopUpFood = (props)=> {
 
   function handleCheck() {
     console.log("handleCheck")
-    fetch(`http://localhost:4044/api/orderstatus/${props.name}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        setOrder(data['result'])
+    fetch(`http://localhost:4044/api/orderstatus/${props.name}`, {
+      method: 'GET',
+       headers: {
+         'Authorization': 'Token '+'4859499',
+         'Content-Type': 'application/json'
+       },
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      setOrder(data['result'])
+    })
+  }
+
+  function handleCancel() {
+    console.log("handleCancel")
+    let opts = {
+      name: props.name,
+      amount: 1
+    }
+    fetch("http://localhost:4044/api/ordercancel/", {
+       method: 'POST',
+       headers: {
+         'Authorization': 'Token '+'4859499',
+         'Content-Type': 'application/json'
+       },
+       body: JSON.stringify(opts)
+    })
+    .then(response => {
+      response.json().then(
+        data => {
+          console.log(data)
+          console.log(data['result'])
+          setOrder(data['result'])
       })
+    })
+    .then( data => {
+      console.log(data)
+    })
+
   }
 
   function handleOrder() {
@@ -33,6 +67,7 @@ const PopUpFood = (props)=> {
     fetch("http://localhost:4044/api/order/", {
        method: 'POST',
        headers: {
+         'Authorization': 'Token '+'4859499',
          'Content-Type': 'application/json'
        },
        body: JSON.stringify(opts)
@@ -66,8 +101,10 @@ const PopUpFood = (props)=> {
               Order</Button>
           <Button variant="primary" size="sm"  onClick={handleCheck}>
               Check</Button>
+          <Button variant="primary" size="sm"  onClick={handleCancel}>
+              Cancel</Button>
           <Button variant="secondary" size="sm"  onClick={handleClose}>
-                Close</Button>
+              Close</Button>
         </Modal.Footer>
     </Modal>
   );

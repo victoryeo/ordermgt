@@ -14,19 +14,18 @@ import ModalFooter from "react-bootstrap/ModalFooter";
 import ModalTitle from "react-bootstrap/ModalTitle";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
-import PopUpFood from './PopupFood';
+import {connect} from "react-redux";
 
-const styles = theme => ({
+const styles = ({
   root: {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-around",
     overflow: "hidden",
-    backgroundColor: theme.palette.background.paper
   },
   gridList: {
     width: 500,
-    height: 650
+    height: 600
   },
   subheader: {
     width: "100%"
@@ -62,24 +61,6 @@ const tileData = [
     status: '',
   },
   {
-    img: "https://material-ui.com/static/images/grid-list/plant.jpg",
-    title: "Water plant",
-    author: "BkrmadtyaKarki",
-    status: '',
-  },
-  {
-    img: "https://material-ui.com/static/images/grid-list/mushroom.jpg",
-    title: "Mushrooms",
-    author: "PublicDomainPictures",
-    status: '',
-  },
-  {
-    img: "https://material-ui.com/static/images/grid-list/olive.jpg",
-    title: "Olive oil",
-    author: "congerdesign",
-    status: '',
-  },
-  {
     img: "https://www.unicef.org/malaysia/sites/unicef.org.malaysia/files/styles/press_release_feature/public/beverages-carbonated-carbonated-drink-1282273.jpg",
     title: "Soda",
     author: "dan fador",
@@ -93,11 +74,58 @@ const tileData = [
   },
 ];
 
+function Subsection(props) {
+  console.log(props.name)
+  if (props.name.title == 'Breakfast') {
+    return(
+      <span>Order status:
+        {`${props.status.breakfast}`}
+        </span>
+  )}
+  else if (props.name.title == 'Tasty burger') {
+    return(
+      <span>Order status:
+        {`${props.status.burger}`}
+        </span>
+  )}
+  else if (props.name.title == 'Honey') {
+    return(
+      <span>Order status:
+        {`${props.status.honey}`}
+        </span>
+  )}
+  else if (props.name.title == 'Vegetables') {
+    return(
+      <span>Order status:
+        {`${props.status.vegetables}`}
+        </span>
+  )}
+  else if (props.name.title == 'Soda') {
+    return(
+      <span>Order status:
+        {`${props.status.soda}`}
+        </span>
+  )}
+  else if (props.name.title == 'Tequila') {
+    return(
+      <span>Order status:
+        {`${props.status.tequila}`}
+        </span>
+  )}
+  else {
+    return(
+      <span>status:
+        NA
+        </span>
+  )}
+}
+
 function OrderList(props) {
   const { classes } = props;
   const [show, setShow] = useState(false);
   const [price, setPrice] = useState(1);
-  const [itemName, setItemName] = useState("Drink")
+  const [itemName, setItemName] = useState("Drink");
+  const [status, setStatus] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -107,24 +135,19 @@ function OrderList(props) {
 
   return (
     <>
-    <div className={classes.root}>
-      <GridList cellHeight={60} className={classes.gridList} cols={3}>
+    <div style={styles.root}>
+      <GridList cellHeight={80} style={styles.gridList} cols={3}>
       <GridListTile key="Subheader" cols={3} style={{ height: 'auto' }}>
         <ListSubheader component="div">Order List</ListSubheader>
       </GridListTile>
         {tileData.map(tile => (
           <GridListTile cols={tile.cols || 1}>
             {tile.title}
+            <img src={tile.img} alt={tile.title} />
             <GridListTileBar
               title={tile.title}
-              subtitle={<span>status: {tile.status}</span>}
-              actionIcon={
-                <IconButton aria-label={`info about ${tile.title}`}
-                className={classes.icon}
-                onClick={(e)=>handleClick(tile.title)} >
-                  <InfoIcon />
-                </IconButton>
-              }
+              subtitle={<Subsection name={tile} status={props} />}
+
             />
           </GridListTile>
         ))}
@@ -138,4 +161,16 @@ OrderList.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(OrderList);
+const mapStateToProps = state => ({
+  breakfast: state.reducers.breakfast,
+  burger: state.reducers.burger,
+  honey: state.reducers.honey,
+  vegetables: state.reducers.vegetables,
+  soda: state.reducers.soda,
+  tequila: state.reducers.tequila,
+})
+
+export default connect(
+  mapStateToProps,
+  withStyles(styles),
+)(OrderList);

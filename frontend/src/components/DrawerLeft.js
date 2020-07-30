@@ -20,6 +20,7 @@ import Eat from "../pages/Eat";
 import Drink from "../pages/Drink";
 import Story from "../pages/Story";
 import Visit from "../pages/Visit";
+import OrderList from "../pages/OrderList";
 import { createBrowserHistory } from "history";
 
 const drawerWidth = 150;
@@ -122,6 +123,13 @@ function DrawerLeft() {
             onClick={onItemClick("Visit")} >
             <ListItemText>Visit</ListItemText>
           </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to="/OrderList"
+            onClick={onItemClick("OrderList")} >
+            <ListItemText>OrderList</ListItemText>
+          </ListItem>
       </List>
       </Drawer>
       <main className={classes.content}>
@@ -130,6 +138,7 @@ function DrawerLeft() {
         <Route path="/drink" component={Drink} />
         <Route path="/story" component={Story} />
         <Route path="/visit" component={Visit} />
+        <Route path="/orderlist" component={OrderList} />
       </main>
       </Router>
 

@@ -1,22 +1,27 @@
 const chai = require('chai')
-let chaiHttp = require('chai-http')
 let server = require('../index')
 let should = chai.should()
 const amqplib = require('amqplib-mocks')
 const { assert } = require('chai')
 
-chai.use(chaiHttp);
-
-describe("test rabbitmq server", (done) => {
+describe("test rabbitmq server", function() {
   let connection, channal
-  let queue = 'test'
-  
+  let queue = 'sendToPayment'
+  this.timeout(5000)
+
   before(async() => {
     connection = await amqplib.connect("amqp://localhost")
     channel = await connection.createChannel()
-    await channel.assertQueue(queue)
+
   })
-  it("should create the channel", (done) => {
+  it("should create the channel", async() => {
+    await channel.assertQueue(queue)
     assert.isObject(channel)
+  })
+  it("should send the message", async() => {
+    const res = await channel.assertQueue(queue)
+    .then((err, res) => {
+          channel.sendToQueue(queue, new Buffer("closed"));
+    })
   })
 })

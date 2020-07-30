@@ -89,8 +89,8 @@ const PopUpFood = (props)=> {
 
   return (
     <Modal show={props.show} onHide={handleClose} size="sm">
-        <ModalHeader>
-          <ModalTitle>{props.name} Price</ModalTitle>
+        <ModalHeader  data-testid="title">
+          <ModalTitle >{props.name} Price</ModalTitle>
         </ModalHeader>
         <ModalBody>
         ${props.price} <p/>

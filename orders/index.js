@@ -27,6 +27,7 @@ let amqp_url = 'amqp://mivclhnw:vES-jPTDO-7qAaAY8fgzKRvMBeCAjbVY@rhino.rmq.cloud
 let queue = 'sendToPayment';
 let amqpConn = null;
 let order
+let timer
 
 amqp.connect(amqp_url, function(err, connection) {
   if (err) {
@@ -55,7 +56,7 @@ function processMsg(msg) {
         console.log(data)
     })
 
-  setTimeout(function() {
+  timer = setTimeout(function() {
       // if confirmed, auto set status to delivered
       if (status == "confirmed") {
         mongoose.findOneAndUpdate({"name": order.name}, {$set:{"state": "delivered"}}, {new: true},
@@ -145,6 +146,7 @@ app.post('/api/ordercancel', (req, res) => {
           console.log(data)
           res.status(200)
           res.json({"result": data.state})
+          clearTimeout(timer)
         }
       })
   }

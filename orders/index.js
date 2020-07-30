@@ -58,15 +58,24 @@ function processMsg(msg) {
 
   timer = setTimeout(function() {
       // if confirmed, auto set status to delivered
-      if (status == "confirmed") {
-        mongoose.findOneAndUpdate({"name": order.name}, {$set:{"state": "delivered"}}, {new: true},
-          (err, data) => {
-          if (err)
-            console.log('find error1')
-          else
-            console.log(data)
-        })
-      }
+      mongoose.findOne({"name": order.name},
+        (err, data) => {
+        if (err) {
+          console.log('find error1')
+        }
+        else {
+          console.log('find success')
+          if (data.state == "confirmed") {
+            mongoose.findOneAndUpdate({"name": order.name}, {$set:{"state": "delivered"}}, {new: true},
+              (err, data) => {
+              if (err)
+                console.log('find error1')
+              else
+                console.log(data)
+            })
+          }
+        }
+      })
     }, 10000);
 }
 

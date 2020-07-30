@@ -22,6 +22,8 @@ import Story from "../pages/Story";
 import Visit from "../pages/Visit";
 import OrderList from "../pages/OrderList";
 import { createBrowserHistory } from "history";
+import { Provider } from 'react-redux'
+import { FirstStore } from '../store/FirstStore'
 
 const drawerWidth = 150;
 const history = createBrowserHistory();
@@ -133,12 +135,14 @@ function DrawerLeft() {
       </List>
       </Drawer>
       <main className={classes.content}>
+      <Provider store={FirstStore}>
         <Route exact path="/" component={Home} />
         <Route path="/eat" component={Eat} />
         <Route path="/drink" component={Drink} />
         <Route path="/story" component={Story} />
         <Route path="/visit" component={Visit} />
         <Route path="/orderlist" component={OrderList} />
+      </Provider>
       </main>
       </Router>
 

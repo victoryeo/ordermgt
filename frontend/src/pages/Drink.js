@@ -14,6 +14,7 @@ import ModalFooter from "react-bootstrap/ModalFooter";
 import ModalTitle from "react-bootstrap/ModalTitle";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
+import PopUpFood from './PopupFood';
 
 const styles = theme => ({
   root: {
@@ -54,17 +55,21 @@ function DrinkList(props) {
   const { classes } = props;
   const [show, setShow] = useState(false);
   const [price, setPrice] = useState(1);
-
+  const [itemName, setItemName] = useState("Drink")
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   function handleClick(e) {
     console.log(e)
     setShow(true)
-    if (e === 'Soda')
+    if (e === 'Soda') {
       setPrice(2)
-    else
+      setItemName('Soda')
+    }
+    else {
       setPrice(15)
+      setItemName('Tequila')
+    }
   };
 
   return (
@@ -92,16 +97,7 @@ function DrinkList(props) {
         ))}
       </GridList>
     </div>
-    <Modal show={show} onHide={handleClose} size="sm">
-      <ModalHeader>
-        <ModalTitle>Price</ModalTitle>
-      </ModalHeader>
-      <ModalBody>{price}</ModalBody>
-      <Modal.Footer>
-        <Button variant="secondary" size="sm"  onClick={handleClose}>
-              Close</Button>
-      </Modal.Footer>
-    </Modal>
+    <PopUpFood show={show} price={price} name={itemName} toggle={handleClose}/>
     </>
   );
 }

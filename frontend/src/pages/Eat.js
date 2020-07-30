@@ -124,9 +124,11 @@ function EatList(props) {
             <img src={tile.img} alt={tile.title} />
             <GridListTileBar
               title={tile.title}
+              role = 'title'
               titlePosition="top"
               actionIcon={
                 <IconButton aria-label={`star ${tile.title}`}
+                data-testid={`${tile.title}`}
                 className={classes.icon}
                 onClick={(e)=>handleClick(tile.title)}>
                   <StarBorderIcon />

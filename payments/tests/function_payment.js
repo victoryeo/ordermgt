@@ -1,6 +1,6 @@
 const chai = require('chai')
-let server = require('../index')
-let should = chai.should()
+const server = require('../index')
+const should = chai.should()
 const amqplib = require('amqplib-mocks')
 const { assert } = require('chai')
 

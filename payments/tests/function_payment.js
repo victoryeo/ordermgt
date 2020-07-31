@@ -19,17 +19,16 @@ describe("test rabbitmq server", function() {
     assert.isObject(channel)
   })
   it("should send the message", async() => {
-    channel.assertQueue(queue)
-    .then((err, res) => {
-      console.log(err)
-    })
+    let owi = await channel.assertQueue(queue)
+    console.log(owi)
+
     let buf = Buffer.from("closed")
     console.log(buf)
     let ret = await channel.sendToQueue(queue, buf)
     console.log(ret)
     assert.isTrue(ret)
   })
-  it("should receive the message", async() => {
+  it("should receive the message", () => {
     channel.assertQueue(queue)
     .then((err, res) => {
       console.log(err)

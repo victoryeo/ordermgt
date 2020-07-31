@@ -19,9 +19,30 @@ describe("test rabbitmq server", function() {
     assert.isObject(channel)
   })
   it("should send the message", async() => {
-    const res = await channel.assertQueue(queue)
+    channel.assertQueue(queue)
     .then((err, res) => {
-          channel.sendToQueue(queue, new Buffer("closed"));
+      console.log(err)
+    })
+    let buf = Buffer.from("closed")
+    console.log(buf)
+    let ret = await channel.sendToQueue(queue, buf)
+    console.log(ret)
+    assert.isTrue(ret)
+  })
+  it("should receive the message", async() => {
+    channel.assertQueue(queue)
+    .then((err, res) => {
+      console.log(err)
+    })
+    channel.consume(queue,
+       (msg => {
+         console.log(" [x] Received %s", msg.content.toString())
+       }),
+       {
+        noAck: true
+       }
+    ).then((err, res) => {
+        console.log(err)
     })
   })
 })

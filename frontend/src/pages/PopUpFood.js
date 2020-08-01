@@ -148,7 +148,7 @@ const PopUpFood = (props)=> {
             console.log('update tequila state')
             result = data['result']
             props.STPupdateTequila(result)
-          }                
+          }
       })
     })
     .then( data => {
@@ -168,7 +168,7 @@ const PopUpFood = (props)=> {
         Order Status: {order}
         </ModalBody>
         <Modal.Footer>
-          <Button variant="primary" size="sm"  onClick={handleOrder}>
+          <Button variant="primary" size="sm"  onClick={handleOrder} data-testid="order">
               Order</Button>
           <Button variant="primary" size="sm"  onClick={handleCheck}>
               Check</Button>

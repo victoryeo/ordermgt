@@ -96,6 +96,7 @@ function EatList(props) {
       setPrice(7)
       setItemName('Vegetables')
     }
+    // if nothing is matched
     else {
       setPrice(5)
       setItemName('Food')

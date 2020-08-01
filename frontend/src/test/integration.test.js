@@ -11,7 +11,7 @@ import { FirstStore } from '../store/FirstStore'
 Enzyme.configure({ adapter: new Adapter() })
 
 describe('Order', () => {
-  test('show breakfast title', async () => {
+  test('should show breakfast title', async () => {
     let show = false
     let price = 1
     let itemName = 'Food'
@@ -25,7 +25,7 @@ describe('Order', () => {
     expect(titles[0]).toHaveTextContent('Breakfast')
     //expect(title).toHaveTextContent('Food Price')
   })
-  test('click on breakfast', async () => {
+  test('can click on breakfast', async () => {
     jest.setTimeout(30000);
     let show = false
     let price = 1
@@ -34,11 +34,43 @@ describe('Order', () => {
       <Provider store={FirstStore}>
       <EatList />
       </Provider>
-    )    
+    )
     fireEvent.click(getByTestId('Breakfast'))
     await wait(() => {
       const rettext = getByText(/Price/i)
       expect(rettext).toHaveTextContent('Breakfast Price')
-    });
+    })
+  })
+  test('check on breakfast price', async () => {
+    jest.setTimeout(30000);
+    let show = false
+    let price = 1
+    let itemName = 'Food'
+    const { getByText, getByTestId } = render(
+      <Provider store={FirstStore}>
+      <EatList />
+      </Provider>
+    )
+    fireEvent.click(getByTestId('Breakfast'))
+    await wait(() => {
+      const rettext = getByText(/Order Status/i)
+      expect(rettext).toHaveTextContent('20')
+    })
+  })
+  test('can click on order button in breakfast', async () => {
+    jest.setTimeout(30000);
+    //const handleOrder = jest.fn()
+    const logSpy = jest.spyOn(console, 'log');
+    const { getByText, getByTestId } = render(
+      <Provider store={FirstStore}>
+      <EatList />
+      </Provider>
+    )
+    fireEvent.click(getByTestId('Breakfast'))
+    await wait(() => {
+      fireEvent.click(getByTestId('order'))
+      console.log(logSpy)
+      expect(logSpy).toBeCalledWith('handleOrder')
+    })
   })
 })

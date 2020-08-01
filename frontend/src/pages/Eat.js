@@ -40,24 +40,28 @@ const tileData = [
     title: "Breakfast",
     author: "jill111",
     cols: 2,
-    featured: true
+    featured: true,
+    number: 1
   },
   {
     img: "https://material-ui.com/static/images/grid-list/burgers.jpg",
     title: "Tasty burger",
     author: "director90",
-    subfeatured: true
+    subfeatured: true,
+    number: 2
   },
   {
     img: "https://material-ui.com/static/images/grid-list/honey.jpg",
     title: "Honey",
-    author: "fancycravel"
+    author: "fancycravel",
+    number: 3,
   },
   {
     img: "https://material-ui.com/static/images/grid-list/vegetables.jpg",
     title: "Vegetables",
     author: "jill111",
-    cols: 2
+    cols: 2,
+    number: 4
   },
 ];
 
@@ -104,7 +108,7 @@ function EatList(props) {
       <GridList cellHeight={160} className={classes.gridList} cols={3}>
         {tileData.map(tile => (
           <GridListTile key={tile.img} cols={tile.featured ? 2 : 1}
-           rows={tile.featured ? 2 : [(tile.subfeatured ? 2 : 1)]
+           rows={tile.featured ? 2 : (tile.subfeatured ? 2 : 1)
                 }>
             <img src={tile.img} alt={tile.title} />
             <GridListTileBar

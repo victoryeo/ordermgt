@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Modal from 'react-bootstrap/Modal'
 import ModalBody from "react-bootstrap/ModalBody";
 import ModalHeader from "react-bootstrap/ModalHeader";
@@ -15,26 +15,46 @@ import {
   STPupdateSoda,
   STPupdateTequila
  } from '../actions/actions.js'
+import * as Rx from 'rxjs'
 
 const PopUpFood = (props)=> {
   const [order, setOrder] = useState('');
+  const elemRef = useRef()
+
   function handleClose() {
     setOrder('')
     props.toggle({order});
   }
 
+  useEffect(()=> {
+    console.log('render')
+    const click$ = Rx.fromEvent(document, 'click')
+      .subscribe(xx => console.log(xx))
+    return () => click$.unsubscribe()
+  }, [])
+
   function handleCheck() {
     console.log("handleCheck")
     let result
-    fetch(`http://localhost:4044/api/orderstatus/${props.name}`, {
-      method: 'GET',
-       headers: {
-         'Authorization': 'Token '+'4859499',
-         'Content-Type': 'application/json'
-       },
+    let url = `http://localhost:4044/api/orderstatus/${props.name}`
+
+    let data$ = new Rx.Observable(observer => {
+      fetch(url, {
+        method: 'GET',
+         headers: {
+           'Authorization': 'Token '+'4859499',
+           'Content-Type': 'application/json'
+         },
+      })
+      .then(response => response.json())
+      .then(data => {
+        observer.next(data)
+        observer.complete()
+      })
+      .catch(err => observer.error(err))
     })
-    .then(response => response.json())
-    .then(data => {
+
+    data$.subscribe(data => {
       console.log(data)
       setOrder(data['result'])
       if (`${props.name}` == 'Breakfast') {
@@ -170,7 +190,7 @@ const PopUpFood = (props)=> {
         <Modal.Footer>
           <Button variant="primary" size="sm"  onClick={handleOrder} data-testid="order">
               Order</Button>
-          <Button variant="primary" size="sm"  onClick={handleCheck}>
+          <Button ref={elemRef} variant="primary" size="sm"  onClick={handleCheck}>
               Check</Button>
           <Button variant="primary" size="sm"  onClick={handleCancel}>
               Cancel</Button>

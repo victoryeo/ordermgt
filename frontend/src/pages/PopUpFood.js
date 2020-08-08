@@ -16,6 +16,7 @@ import {
   STPupdateTequila
  } from '../actions/actions.js'
 import * as Rx from 'rxjs'
+import { map, scan } from 'rxjs/operators'
 
 const PopUpFood = (props)=> {
   const [order, setOrder] = useState('');
@@ -29,7 +30,20 @@ const PopUpFood = (props)=> {
   useEffect(()=> {
     console.log('render')
     const click$ = Rx.fromEvent(document, 'click')
-      .subscribe(xx => console.log(xx))
+      .pipe(
+        map(event=>event.target.id),
+        scan((buttonid, target)=>target)
+      )
+      .subscribe(buttonid => {
+        console.log(buttonid)
+        //console.log(Object.values(buttonid))
+        if (buttonid == "check") {
+          console.log('check button is clicked')
+          let result
+          let url = `http://localhost:4044/api/orderstatus/${props.name}`
+          console.log(url)
+        }
+      })
     return () => click$.unsubscribe()
   }, [])
 
@@ -37,7 +51,7 @@ const PopUpFood = (props)=> {
     console.log("handleCheck")
     let result
     let url = `http://localhost:4044/api/orderstatus/${props.name}`
-
+    console.log(url)
     let data$ = new Rx.Observable(observer => {
       fetch(url, {
         method: 'GET',
@@ -190,7 +204,7 @@ const PopUpFood = (props)=> {
         <Modal.Footer>
           <Button variant="primary" size="sm"  onClick={handleOrder} data-testid="order">
               Order</Button>
-          <Button ref={elemRef} variant="primary" size="sm"  onClick={handleCheck}>
+          <Button id="check" ref={elemRef} variant="primary" size="sm"  onClick={handleCheck}>
               Check</Button>
           <Button variant="primary" size="sm"  onClick={handleCancel}>
               Cancel</Button>

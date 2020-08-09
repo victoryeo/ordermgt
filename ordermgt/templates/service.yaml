@@ -1,0 +1,57 @@
+{{- if .Values.frontend.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ordermgt_frontend.fullname" . }}
+  labels:
+    {{- include "ordermgt.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.frontend.service.type }}
+  ports:
+    - port: 8001
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "ordermgt.selectorLabels" . | nindent 4 }}
+{{- end }}
+
+---
+
+{{- if .Values.orders.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ordermgt_orders.fullname" . }}
+  labels:
+    {{- include "ordermgt.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.orders.service.type }}
+  ports:
+    - port: 8002
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "ordermgt.selectorLabels" . | nindent 4 }}
+{{- end }}
+
+---
+  
+{{- if .Values.payments.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ordermgt_payments.fullname" . }}
+  labels:
+    {{- include "ordermgt.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.payments.service.type }}
+  ports:
+    - port: 8003
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "ordermgt.selectorLabels" . | nindent 4 }}
+{{- end }}

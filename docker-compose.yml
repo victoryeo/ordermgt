@@ -1,12 +1,19 @@
 version: "3"
 services:
+  frontend:
+    container_name: frontend
+    restart: always
+    build: ./frontend
+    image: chaintope99/ordermgt_frontend
+    ports:
+      - "3000:8001"
   orders:
     container_name: orders
     restart: always
     build: ./orders
     image: chaintope99/ordermgt_orders
     ports:
-      - "4040:8000"
+      - "4040:8002"
     links:
       - mongo
   payments:
@@ -15,7 +22,7 @@ services:
     build: ./payments
     image: chaintope99/ordermgt_payments
     ports:
-      - "4040:8000"
+      - "4040:8003"
     links:
       - mongo
   mongo:

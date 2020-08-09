@@ -1,0 +1,25 @@
+version: "3"
+services:
+  orders:
+    container_name: orders
+    restart: always
+    build: ./orders
+    image: chaintope99/ordermgt_orders
+    ports:
+      - "4040:8000"
+    links:
+      - mongo
+  payments:
+    container_name: payments
+    restart: always
+    build: ./payments
+    image: chaintope99/ordermgt_payments
+    ports:
+      - "4040:8000"
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27018:27017"

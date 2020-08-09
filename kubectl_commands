@@ -1,0 +1,15 @@
+kubectl cluster-info
+kubectl get nodes
+kubectl get all
+kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.10
+kubectl  create namespace test
+kubectl --namespace test port-forward $POD_NAME 8080:80
+
+helm lint ./ordermgt/
+helm install --namespace test ordermgt ./ordermgt
+helm install ordermgt3 ordermgt/ --namespace test --set service.type=NodePort
+helm install ordermgt ordermgt/ --namespace test  --values ordermgt/values.yaml
+helm ls
+helm ls --namespace test
+helm delete ordermgt
+helm uninstall --namespace test ordermgt ./ordermgt

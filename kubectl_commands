@@ -41,6 +41,8 @@ kubectl rollout status deployments/kubernetes-bootcamp
 kubectl rollout undo deployments/kubernetes-bootcamp
 kubectl delete service hello-node
 kubectl delete deployment hello-node
+# example of applying yaml file to create deployment and associated replica set
+https://k8s.io/examples/service/load-balancer-example.yaml
 
 helm create <name>
 helm lint ./ordermgt/

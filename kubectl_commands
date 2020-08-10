@@ -15,7 +15,7 @@ kubectl proxy
 export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
 export NODE_PORT=$(kubectl get services/kubernetes-bootcamp -o go-template='{{(index .spec.ports 0).nodePort}}')
 kubectl create namespace test
-# port forward from internal to external port
+# port forward from internal port 80 to external port 8080
 kubectl --namespace test port-forward $POD_NAME 8080:80
 # show the log output from the container
 kubectl logs $POD_NAME

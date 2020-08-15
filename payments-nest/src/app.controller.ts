@@ -17,15 +17,11 @@ export class AppController {
     @Ctx() context: RmqContext
   ) {
     const channel = context.getChannelRef();
-    const orginalMessage = context.getMessage();
+    const orginalMessage: Record<string, any> = context.getMessage();
     console.log('data', data);
+    console.log('origin', orginalMessage)
     //random payment result
-    let result = Math.random() * (10 - 1) + 1
-    console.log(result)
-    // send status to order
-    if (result > 5 && result <= 10)
-      channel.ack("confirmed");
-    else
-      channel.ack("declined");
+    let result: string = this.appService.getOrderResult();
+    channel.ack(result)
   }
 }

@@ -19,6 +19,13 @@ export class AppController {
     const channel = context.getChannelRef();
     const orginalMessage = context.getMessage();
     console.log('data', data);
-    channel.ack(orginalMessage);
+    //random payment result
+    let result = Math.random() * (10 - 1) + 1
+    console.log(result)
+    // send status to order
+    if (result > 5 && result <= 10)
+      channel.ack("confirmed");
+    else
+      channel.ack("declined");
   }
 }

@@ -25,11 +25,11 @@ export class AppController {
     channel.ack(result)
   }
 
-  getOrderResult() {
+  getOrderResult():string {
     return this.appService.getOrderResult()
   }
 
   getHello():string {
-    return("Hello World!")
+    return this.appService.getHello()
   }
 }

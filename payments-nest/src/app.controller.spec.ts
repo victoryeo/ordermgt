@@ -19,4 +19,10 @@ describe('AppController', () => {
       expect(appController.getHello()).toBe('Hello World!');
     });
   });
+
+  describe('root', () => {
+    it('should return order result', () => {
+      expect(appController.getOrderResult()).toMatch(/^declined|confirmed$/);
+    });
+  });
 });

@@ -24,4 +24,12 @@ export class AppController {
     let result: string = this.appService.getOrderResult();
     channel.ack(result)
   }
+
+  getOrderResult() {
+    return this.appService.getOrderResult()
+  }
+
+  getHello():string {
+    return("Hello World!")
+  }
 }

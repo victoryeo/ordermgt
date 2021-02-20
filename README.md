@@ -9,3 +9,4 @@ To start the project, make sure mongodb is running, then:
 2. cd to payments, run npm start
 3. cd to frontend, run npm start
 
+The ordermgt folder contains kubernetes files.

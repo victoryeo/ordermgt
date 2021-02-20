@@ -44,19 +44,22 @@ kubectl delete deployment hello-node
 # example of applying yaml file to create deployment and associated replica set
 kubectl apply -f https://k8s.io/examples/service/load-balancer-example.yaml
 
-helm create <name>
+# create a new chart in a new directory, only run once
+helm create ordermgt
+# check syntax of Chart.yaml file
 helm lint ./ordermgt/
 helm install --namespace test ordermgt ./ordermgt
 helm install ordermgt ordermgt/ --namespace test --set service.type=NodePort
 helm install ordermgt ordermgt/ --namespace test --values ordermgt/values.yaml
 helm ls
 helm ls --namespace test
-helm delete ordermgt
+helm delete ordermgt --namespace test
 helm uninstall --namespace test ordermgt ./ordermgt
 
+# to run kubernetes locally
 minikube version
 minikube start
-minikube service <service_name>
+minikube service list
 minikube addons list
 minikube addons enable metrics-server
 minikube addons disable metrics-server
@@ -64,3 +67,23 @@ minikube ip
 minikube stop
 # delete minikube VM!!!!!
 minikube delete
+
+# docker commands
+# build and tag the docker image
+docker build -t <name> .
+# list docker images
+docker image ls
+# run container instance from the image we created 
+docker run -it -p <host_port>:<container_port>  <name>
+# run container in detched mode
+docker run -itd -p <host_port>:<container_port>  <name>
+# show container id
+docker ps
+# enter the shell of the container whose id is entered
+dcker exec -it <container_id> sh
+# tag the image
+docker tag <tag_id> <dockerhub_name>/<container_name>:latest
+# push to docker hub
+docker push <dockerhub_name>/<container_name>
+# show debug log
+docker logs --tail=50 <container_name>

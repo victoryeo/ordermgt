@@ -1,12 +1,9 @@
 FROM node:11.1.0-alpine
-RUN mkdir -p /usr/local/victor
-WORKDIR /usr/local/victor
-RUN apk add --no-cache git
-
-RUN git clone -b master https://github.com/victoryeo/ordermgt.git
-WORKDIR /usr/local/victor/ordermgt/orders
+RUN mkdir -p /usr/local/orders
+COPY package.json /usr/local/orders
+WORKDIR /usr/local/orders/
 RUN npm install
+COPY . /usr/local/orders
 
 EXPOSE 4044
-ENTRYPOINT [“npm”]
-CMD [“start”] 
+CMD ["npm", "start"]

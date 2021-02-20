@@ -1,12 +1,9 @@
 FROM node:11.1.0-alpine
-RUN mkdir -p /usr/local/victor
-WORKDIR /usr/local/victor
-RUN apk add --no-cache git
-
-RUN git clone -b master https://github.com/victoryeo/ordermgt.git
-WORKDIR /usr/local/victor/ordermgt/payments
+RUN mkdir -p /usr/local/payments
+COPY package.json /usr/local/payments
+WORKDIR /usr/local/payments/
 RUN npm install
+COPY . /usr/local/payments
 
-EXPOSE 4044
-ENTRYPOINT [“npm”]
-CMD [“start”] 
+EXPOSE 4045
+CMD ["npm", "start"] 

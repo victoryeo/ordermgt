@@ -1,3 +1,6 @@
+# create docker secret key
+kubectl create secret generic regcred   --from-file=.dockerconfigjson=<path>/.docker/config.json   --type=kubernetes.io/dockerconfigjson
+# show version
 kubectl version
 kubectl cluster-info
 kubectl get nodes

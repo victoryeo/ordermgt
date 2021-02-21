@@ -1,0 +1,22 @@
+{{- if .Values.frontend.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  {{ include "ordermgt_frontend.fullname" . }}
+spec:
+  replicas: {{ .Values.frontend.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "ordermgt.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "ordermgt.name" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}
+          imagePullPolicy:  {{ .Values.frontend.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+{{- end }}

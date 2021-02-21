@@ -51,9 +51,10 @@ kubectl apply -f https://k8s.io/examples/service/load-balancer-example.yaml
 helm create ordermgt
 # check syntax of Chart.yaml file
 helm lint ./ordermgt/
-helm install --namespace test ordermgt ./ordermgt
-helm install ordermgt ordermgt/ --namespace test --set service.type=NodePort
-helm install ordermgt ordermgt/ --namespace test --values ordermgt/values.yaml
+helm install <release_name> <folder_name>
+helm install ordermgt ./ordermgt/ --namespace test
+helm install ordermgt ./ordermgt/ --namespace test --set service.type=NodePort
+helm install ordermgt ./ordermgt/ --namespace test --values ordermgt/values.yaml
 helm ls
 helm ls --namespace test
 helm delete ordermgt --namespace test
@@ -74,9 +75,11 @@ minikube delete
 # docker commands
 # build and tag the docker image
 docker build -t <name> .
+# build with specific dockerfilename
+docker build -f <dockerfilename> -t <name> .
 # list docker images
 docker image ls
-# run container instance from the image we created 
+# run container instance from the image we created
 docker run -it -p <host_port>:<container_port>  <name>
 # run container in detched mode
 docker run -itd -p <host_port>:<container_port>  <name>

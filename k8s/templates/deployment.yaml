@@ -1,10 +1,9 @@
-{{- if .Values.frontend.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  {{ include "ordermgt_frontend.fullname" . }}
+  name:  {{ .Chart.Name }}
 spec:
-  replicas: {{ .Values.frontend.replicaCount }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: {{ include "ordermgt.name" . }}
@@ -14,9 +13,17 @@ spec:
         app: {{ include "ordermgt.name" . }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        {{- if .Values.frontend.enabled }}
+        - name: {{ include "ordermgt_frontend.fullname" . }}
           image: {{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}
           imagePullPolicy:  {{ .Values.frontend.image.pullPolicy }}
           ports:
             - containerPort: 80
-{{- end }}
+        {{- end }}
+        {{- if .Values.orders.enabled }}
+        - name: {{ include "ordermgt_orders.fullname" . }}
+          image: {{ .Values.orders.image.repository }}:{{ .Values.orders.image.tag }}
+          imagePullPolicy:  {{ .Values.orders.image.pullPolicy }}
+          ports:
+            - containerPort: 4044
+        {{- end }}

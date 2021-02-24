@@ -64,3 +64,7 @@ Create the name of the service account to use
 {{- define "ordermgt_frontend.fullname" -}}
 {{- printf "%s-%s-frontend" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{- define "ordermgt_orders.fullname" -}}
+{{- printf "%s-%s-orders" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}

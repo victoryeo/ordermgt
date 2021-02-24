@@ -1,11 +1,11 @@
-{{- if .Values.frontend.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "ordermgt_frontend.fullname" . }}
+  name: {{ .Chart.Name }}
 spec:
-  type: {{ .Values.frontend.service.type }}
+  type: {{ .Values.service.type }}
   ports:
+    {{- if .Values.frontend.enabled }}
     # Inside the cluster, what port does the service expose?
     - port: {{ .Values.frontend.service.port }}
     # Which port do pods selected by this service expose?
@@ -13,6 +13,14 @@ spec:
       protocol: TCP
     # Which port on the node is the service available through?
       nodePort: {{ .Values.frontend.service.nodePort }}
+      name: frontend
+    {{- end }}
+    {{- if .Values.orders.enabled }}
+    - port: {{ .Values.orders.service.port }}
+      targetPort:
+      protocol: TCP
+      nodePort: {{ .Values.orders.service.nodePort }}
+      name: orders
+    {{- end }}
   selector:
     app: {{ include "ordermgt.name" . }}
-{{- end }}

@@ -4,6 +4,20 @@
 nameOverride: ""
 fullnameOverride: ""
 
+service:
+  type: NodePort
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+replicaCount: 1
+
 frontend:
   fullname: frontend
   enabled: true
@@ -17,15 +31,6 @@ frontend:
 
   imagePullSecrets:
     - name: regcred
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: false
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
 
   service:
     type: NodePort
@@ -47,3 +52,16 @@ frontend:
   tolerations: []
 
   affinity: {}
+
+orders:
+  enabled: true
+  replicaCount: 1
+  service:
+    type: NodePort
+    nodePort: 31001
+    port: 4044
+  image:
+    repository: chaintope99/ordermgt_orders
+    tag: latest
+    pullPolicy: Always
+  resources: {}

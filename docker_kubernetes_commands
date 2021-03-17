@@ -13,6 +13,7 @@ kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.10
 kubectl get deployments
 # can find label name using describe deployments
 kubectl describe deployments
+# get replicate set
 kubectl get rs
 kubectl proxy
 export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
@@ -22,7 +23,7 @@ kubectl create namespace test
 kubectl --namespace test port-forward $POD_NAME 8080:80
 # show the log output from the container
 kubectl logs $POD_NAME
-# execute command in the container
+# execute a command in the container
 kubectl exec $POD_NAME env
 kubectl exec -ti $POD_NAME bash
 # expose the port and create a new service
@@ -51,6 +52,7 @@ kubectl apply -f https://k8s.io/examples/service/load-balancer-example.yaml
 helm create ordermgt
 # check syntax of Chart.yaml file
 helm lint ./ordermgt/
+# install the container image to kubernetes cluster
 helm install <release_name> <folder_name>
 helm install ordermgt ./ordermgt/ --namespace test
 helm install ordermgt ./ordermgt/ --namespace test --set service.type=NodePort
@@ -93,3 +95,53 @@ docker tag <tag_id> <dockerhub_name>/<container_name>:latest
 docker push <dockerhub_name>/<container_name>
 # show debug log
 docker logs --tail=50 <container_name>
+
+##### working with GKE
+# connect to gke cluster
+gcloud container clusters get-credentials quorum-test --zone us-central1-c --project me-kyuusandbox-poc
+gcloud container clusters get-credentials testonly --zone us-west1-a --project me-kyuusandbox-poc
+
+# create a gke cluster
+gcloud container clusters create <cluster-name> --num-nodes=1
+
+# deploy an application to cluster
+kubectl create deployment hello-server --image=gcr.io/google-samples/hello-app:1.0
+
+# expose the deploment
+kubectl expose deployment hello-server --type LoadBalancer \
+  --port 80 --target-port 8080
+  
+# get service
+kubectl get service hello-server
+
+# delete the app
+kubectl delete service hello-server
+
+# Use this command to execute geth command in pods
+kubectl exec -i -t <pod_name> --container <container_name> -- geth attach /etc/quorum/qdata/dd/geth.ipc
+
+# connect to pod and container and run "sh" shell
+kubectl exec -ti <podname> --container quorum -- sh
+# then inside the container, execute geth command
+geth attach $QHOME/dd/geth.ipc
+
+# get the manifest of the pod
+kubectl get pods <pod_name> -o yaml
+
+# get log of container
+kubectl logs <podname> -c <container_name> 
+
+###########
+# to initialise local Ubuntu to connnect to GKE
+$ gcloud  init
+
+$ kubectl config current-context
+minikube
+
+# change k8s connection from minikube to gke
+$ gcloud container clusters get-credentials testonly --zone us-west1-a --project me-kyuusandbox-poc
+Fetching cluster endpoint and auth data.
+kubeconfig entry generated for testonly.
+
+$ kubectl config current-context
+gke_me-kyuusandbox-poc_us-west1-a_testonly

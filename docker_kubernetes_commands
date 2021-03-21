@@ -103,6 +103,14 @@ gcloud container clusters get-credentials testonly --zone us-west1-a --project m
 
 # create a gke cluster
 gcloud container clusters create <cluster-name> --num-nodes=1
+# by default, creare 3 nodes
+gcloud container clusters create cluster-name --zone=asia-east2-a
+
+# delete a gke cluster
+gcloud  container clusters delete cluster-name --zone=us-west1-a
+
+# list cluster
+gcloud  container clusters list
 
 # deploy an application to cluster
 kubectl create deployment hello-server --image=gcr.io/google-samples/hello-app:1.0

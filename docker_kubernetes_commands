@@ -101,6 +101,9 @@ docker logs --tail=50 <container_name>
 gcloud container clusters get-credentials quorum-test --zone us-central1-c --project me-kyuusandbox-poc
 gcloud container clusters get-credentials testonly --zone us-west1-a --project me-kyuusandbox-poc
 
+# select local cluster
+kubectl config use-context minikube
+
 # create a gke cluster
 gcloud container clusters create <cluster-name> --num-nodes=1
 # by default, creare 3 nodes

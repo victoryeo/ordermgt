@@ -61,6 +61,7 @@ helm ls
 helm ls --namespace test
 helm delete ordermgt --namespace test
 helm uninstall --namespace test ordermgt ./ordermgt
+helm -n test list -aq
 
 # to run kubernetes locally
 minikube version

@@ -59,7 +59,8 @@ helm install ordermgt ./ordermgt/ --namespace test --set service.type=NodePort
 helm install ordermgt ./ordermgt/ --namespace test --values ordermgt/values.yaml
 helm ls
 helm ls --namespace test
-helm delete ordermgt --namespace test
+# helm delete is renamed to helm uninstall
+helm delete --namespace test ordermgt
 helm uninstall --namespace test ordermgt ./ordermgt
 helm -n test list -aq
 
